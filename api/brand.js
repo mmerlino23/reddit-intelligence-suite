@@ -1,4 +1,4 @@
-const RedditFreeAPI = require('../modules/reddit-free-api');
+const RedditProxyAPI = require('../modules/reddit-proxy-api');
 const SentimentAnalyzer = require('../modules/sentiment');
 
 module.exports = async (req, res) => {
@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
             return;
         }
         
-        const api = new RedditFreeAPI(); // Using FREE Reddit API
+        const api = new RedditProxyAPI(); // Using Reddit via proxy
         const sentiment = new SentimentAnalyzer();
         
         // Search for brand mentions

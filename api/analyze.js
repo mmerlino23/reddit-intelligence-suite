@@ -1,4 +1,4 @@
-const RedditFreeAPI = require('../modules/reddit-free-api');
+const RedditProxyAPI = require('../modules/reddit-proxy-api');
 const SentimentAnalyzer = require('../modules/sentiment');
 const PainExtractor = require('../modules/pain-extractor');
 
@@ -26,8 +26,8 @@ module.exports = async (req, res) => {
             return;
         }
         
-        // Using FREE Reddit API - no authentication needed
-        const api = new RedditFreeAPI();
+        // Using Reddit API via proxy (works on Vercel)
+        const api = new RedditProxyAPI();
         const sentiment = new SentimentAnalyzer();
         const painExtractor = new PainExtractor();
         
