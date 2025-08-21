@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit Intelligence Suite</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .search-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+        
+        .search-type {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .search-type button {
+            flex: 1;
+            padding: 15px;
+            background: #f0f0f0;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .search-type button.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 10px;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        
+        button[type="submit"] {
+            padding: 15px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button[type="submit"]:hover {
+            background: #5a67d8;
+        }
+        
+        #loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: white;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #results {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            display: none;
+        }
+        
+        .result-header {
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .result-header h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 30px;
+            margin: 20px 0;
+        }
+        
+        .stat {
+            flex: 1;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .sentiment-bar {
+            display: flex;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .sentiment-positive { background: #48bb78; }
+        .sentiment-negative { background: #f56565; }
+        .sentiment-neutral { background: #cbd5e0; }
+        
+        .threads {
+            margin-top: 30px;
+        }
+        
+        .thread {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: transform 0.2s;
+        }
+        
+        .thread:hover {
+            transform: translateX(5px);
+        }
+        
+        .thread-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .thread-meta {
+            display: flex;
+            gap: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .thread-link {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .pain-points {
+            margin-top: 30px;
+        }
+        
+        .pain-category {
+            margin-bottom: 20px;
+        }
+        
+        .pain-category h4 {
+            color: #333;
+            margin-bottom: 10px;
+            text-transform: capitalize;
+        }
+        
+        .pain-item {
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        
+        .error {
+            background: #fee;
+            color: #c00;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Reddit Intelligence Suite</h1>
+            <p class="subtitle">Analyze Reddit discussions, track brand mentions, and discover market insights</p>
+        </header>
+        
+        <div class="search-container">
+            <div class="search-type">
+                <button class="active" data-type="keyword">Keyword Analysis</button>
+                <button data-type="brand">Brand Monitoring</button>
+            </div>
+            
+            <form id="searchForm" class="search-form">
+                <input type="text" id="searchInput" placeholder="Enter keyword or brand name..." required>
+                <button type="submit">Analyze</button>
+            </form>
+        </div>
+        
+        <div id="loading">
+            <div class="spinner"></div>
+            <p>Analyzing Reddit discussions...</p>
+        </div>
+        
+        <div id="results"></div>
+    </div>
+    
+    <script>
+        let searchType = 'keyword';
+        const API_BASE = '/api';
+        
+        // Handle search type switching
+        document.querySelectorAll('.search-type button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.search-type button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                searchType = this.dataset.type;
+                
+                const input = document.getElementById('searchInput');
+                if (searchType === 'brand') {
+                    input.placeholder = 'Enter brand name...';
+                } else {
+                    input.placeholder = 'Enter keyword or topic...';
+                }
+            });
+        });
+        
+        // Handle form submission
+        document.getElementById('searchForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            if (!searchTerm) return;
+            
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            
+            loading.style.display = 'block';
+            results.style.display = 'none';
+            
+            try {
+                const endpoint = searchType === 'brand' ? '/brand' : '/analyze';
+                const response = await fetch(`${API_BASE}${endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        [searchType === 'brand' ? 'brandName' : 'keyword']: searchTerm,
+                        limit: 50
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Analysis failed');
+                }
+                
+                displayResults(data, searchType);
+            } catch (error) {
+                console.error('Error:', error);
+                results.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+                results.style.display = 'block';
+            } finally {
+                loading.style.display = 'none';
+            }
+        });
+        
+        function displayResults(data, type) {
+            const results = document.getElementById('results');
+            
+            if (!data || (data.totalThreads === 0 && !data.totalMentions)) {
+                results.innerHTML = '<div class="error">No results found. Try a different search term.</div>';
+                results.style.display = 'block';
+                return;
+            }
+            
+            let html = '<div class="result-header">';
+            
+            if (type === 'brand') {
+                html += `
+                    <h2>Brand Analysis: ${data.brand}</h2>
+                    <p>Generated: ${new Date(data.generated).toLocaleString()}</p>
+                `;
+                
+                if (data.overview) {
+                    html += `
+                        <div class="stats">
+                            <div class="stat">
+                                <div class="stat-value">${data.overview.totalMentions || 0}</div>
+                                <div class="stat-label">Total Mentions</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${data.overview.avgEngagement || 0}</div>
+                                <div class="stat-label">Avg Engagement</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${data.reportCard?.overall || 'N/A'}</div>
+                                <div class="stat-label">Overall Grade</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                if (data.sentiment && data.sentiment.breakdown) {
+                    const total = Object.values(data.sentiment.breakdown).reduce((a, b) => a + b, 1);
+                    html += `
+                        <h3>Sentiment Analysis</h3>
+                        <div class="sentiment-bar">
+                            <div class="sentiment-positive" style="width: ${(data.sentiment.breakdown.positive / total * 100)}%"></div>
+                            <div class="sentiment-neutral" style="width: ${(data.sentiment.breakdown.neutral / total * 100)}%"></div>
+                            <div class="sentiment-negative" style="width: ${(data.sentiment.breakdown.negative / total * 100)}%"></div>
+                        </div>
+                    `;
+                }
+            } else {
+                html += `
+                    <h2>Keyword Analysis: ${data.keyword}</h2>
+                    <p>Analyzed: ${new Date(data.timestamp).toLocaleString()}</p>
+                `;
+                
+                html += `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">${data.totalThreads || 0}</div>
+                            <div class="stat-label">Total Threads</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${data.totalComments || 0}</div>
+                            <div class="stat-label">Total Comments</div>
+                        </div>
+                    </div>
+                `;
+                
+                if (data.sentimentBreakdown) {
+                    const total = Object.values(data.sentimentBreakdown).reduce((a, b) => a + b, 1);
+                    html += `
+                        <h3>Sentiment Breakdown</h3>
+                        <div class="sentiment-bar">
+                            <div class="sentiment-positive" style="width: ${(data.sentimentBreakdown.positive / total * 100)}%"></div>
+                            <div class="sentiment-neutral" style="width: ${(data.sentimentBreakdown.neutral / total * 100)}%"></div>
+                            <div class="sentiment-negative" style="width: ${(data.sentimentBreakdown.negative / total * 100)}%"></div>
+                        </div>
+                    `;
+                }
+            }
+            
+            html += '</div>';
+            
+            // Display top threads
+            const threads = data.topThreads || [];
+            if (threads.length > 0) {
+                html += '<div class="threads"><h3>Top Discussions</h3>';
+                threads.forEach(thread => {
+                    html += `
+                        <div class="thread">
+                            <div class="thread-title">${thread.title}</div>
+                            <div class="thread-meta">
+                                <span>r/${thread.subreddit}</span>
+                                <span>Score: ${thread.score}</span>
+                                <span>Comments: ${thread.comments}</span>
+                                <a href="${thread.url}" target="_blank" class="thread-link">View Thread</a>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+            
+            // Display pain points for keyword analysis
+            if (type === 'keyword' && data.painPoints && data.painPoints.length > 0) {
+                const painsByCategory = {};
+                data.painPoints.forEach(pain => {
+                    if (!painsByCategory[pain.category]) {
+                        painsByCategory[pain.category] = [];
+                    }
+                    painsByCategory[pain.category].push(pain);
+                });
+                
+                html += '<div class="pain-points"><h3>Identified Pain Points</h3>';
+                Object.entries(painsByCategory).forEach(([category, pains]) => {
+                    html += `<div class="pain-category"><h4>${category.replace('_', ' ')}</h4>`;
+                    pains.slice(0, 3).forEach(pain => {
+                        html += `<div class="pain-item">${pain.context}</div>`;
+                    });
+                    html += '</div>';
+                });
+                html += '</div>';
+            }
+            
+            results.innerHTML = html;
+            results.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

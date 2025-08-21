@@ -1,0 +1,132 @@
+{
+  "api": {
+    "rapidApiKey": "c3a374550fmsha7a66e40a84e60dp1de4d4jsn64eafe5401e4",
+    "rapidApiHost": "reddit34.p.rapidapi.com",
+    "timeout": 30000,
+    "retryAttempts": 3,
+    "rateLimitDelay": 1000
+  },
+  "analysis": {
+    "defaultScanLimit": 50,
+    "maxScanLimit": 500,
+    "sentimentThreshold": 0.6,
+    "urgencyKeywords": [
+      "urgent",
+      "asap",
+      "immediately",
+      "help",
+      "critical",
+      "emergency",
+      "desperate",
+      "please help",
+      "need help now"
+    ],
+    "painIndicators": [
+      "problem",
+      "issue",
+      "difficult",
+      "struggle",
+      "frustrating",
+      "annoying",
+      "broken",
+      "doesn't work",
+      "wish",
+      "need",
+      "can't",
+      "unable",
+      "failed",
+      "error"
+    ]
+  },
+  "content": {
+    "minContentLength": 100,
+    "maxContentLength": 5000,
+    "defaultImageFormat": "svg",
+    "supportedImageFormats": ["svg", "png", "jpg"],
+    "contentTypes": [
+      "solution_post",
+      "comparison_post",
+      "tutorial_post",
+      "announcement_post",
+      "educational_post"
+    ]
+  },
+  "social": {
+    "platforms": {
+      "reddit": {
+        "enabled": true,
+        "priority": 1
+      },
+      "twitter": {
+        "enabled": true,
+        "priority": 2
+      },
+      "linkedin": {
+        "enabled": true,
+        "priority": 3
+      },
+      "instagram": {
+        "enabled": true,
+        "priority": 4
+      },
+      "facebook": {
+        "enabled": true,
+        "priority": 5
+      },
+      "tiktok": {
+        "enabled": false,
+        "priority": 6
+      }
+    },
+    "defaultHashtags": [
+      "#reddit",
+      "#communityinsights",
+      "#datadriven",
+      "#socialmedia"
+    ]
+  },
+  "monitoring": {
+    "enabled": false,
+    "intervalSeconds": 3600,
+    "maxMonitoredKeywords": 10,
+    "alertThreshold": {
+      "sentiment": -0.5,
+      "urgentIssues": 3,
+      "painPoints": 5
+    }
+  },
+  "storage": {
+    "dataRetentionDays": 30,
+    "maxFileSize": "10MB",
+    "backupEnabled": true,
+    "backupInterval": "daily"
+  },
+  "server": {
+    "defaultPort": 3000,
+    "host": "localhost",
+    "corsEnabled": true,
+    "maxRequestSize": "10MB",
+    "sessionTimeout": 3600000
+  },
+  "notifications": {
+    "enabled": false,
+    "channels": ["email", "slack"],
+    "events": [
+      "high_negative_sentiment",
+      "urgent_issues_detected",
+      "viral_post_detected",
+      "competitor_mentioned"
+    ]
+  },
+  "features": {
+    "sentimentAnalysis": true,
+    "painPointExtraction": true,
+    "brandAnalytics": true,
+    "contentGeneration": true,
+    "imageGeneration": true,
+    "socialFormatting": true,
+    "realTimeMonitoring": false,
+    "competitorTracking": true,
+    "influencerIdentification": true
+  }
+}

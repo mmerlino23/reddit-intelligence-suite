@@ -1,0 +1,37 @@
+{
+  "name": "reddit-intelligence-suite",
+  "version": "1.0.0",
+  "description": "Comprehensive Reddit Intelligence & Content Creation Suite - Transform Reddit data into actionable insights and content",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js server",
+    "analyze": "node app.js analyze",
+    "brand": "node app.js brand",
+    "content": "node app.js create-content",
+    "test": "node test.js",
+    "dev": "vercel dev",
+    "build": "echo 'No build step required'",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "reddit",
+    "sentiment-analysis",
+    "content-creation",
+    "social-media",
+    "brand-analytics",
+    "market-research",
+    "pain-points",
+    "data-intelligence"
+  ],
+  "author": "Reddit Intelligence Suite",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/reddit-intelligence-suite"
+  }
+}
