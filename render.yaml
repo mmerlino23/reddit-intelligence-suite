@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: reddit-intelligence-suite
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /*

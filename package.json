@@ -4,7 +4,7 @@
   "description": "Comprehensive Reddit Intelligence & Content Creation Suite - Transform Reddit data into actionable insights and content",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js server",
+    "start": "node server.js",
     "analyze": "node app.js analyze",
     "brand": "node app.js brand",
     "content": "node app.js create-content",
@@ -25,7 +25,10 @@
   ],
   "author": "Reddit Intelligence Suite",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
   "devDependencies": {},
   "engines": {
     "node": ">=14.0.0"
