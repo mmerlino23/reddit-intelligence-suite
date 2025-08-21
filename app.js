@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const Scanner = require('./modules/scanner');
+const RedditAPI = require('./modules/reddit-api');
 const EnhancedScanner = require('./modules/enhanced-scanner');
 const SentimentAnalyzer = require('./modules/sentiment');
 const PainExtractor = require('./modules/pain-extractor');
@@ -31,7 +32,6 @@ class RedditIntelligenceSuite {
             return JSON.parse(fs.readFileSync(configPath, 'utf8'));
         }
         return {
-            apiKey: 'c3a374550fmsha7a66e40a84e60dp1de4d4jsn64eafe5401e4',
             scanDepth: 100,
             sentimentThreshold: 0.6,
             urgencyKeywords: ['urgent', 'asap', 'immediately', 'help', 'critical', 'emergency'],

@@ -1,4 +1,4 @@
-const EnhancedScanner = require('../modules/enhanced-scanner');
+const RedditAPI = require('../modules/reddit-api');
 const SentimentAnalyzer = require('../modules/sentiment');
 const PainExtractor = require('../modules/pain-extractor');
 
@@ -26,12 +26,13 @@ module.exports = async (req, res) => {
             return;
         }
         
-        const scanner = new EnhancedScanner(process.env.RAPIDAPI_KEY);
+        // Using YOUR PAID Reddit34 API
+        const api = new RedditAPI();
         const sentiment = new SentimentAnalyzer();
         const painExtractor = new PainExtractor();
         
-        // Search for posts
-        const threads = await scanner.searchPosts(keyword, limit);
+        // Search for posts using YOUR PAID API
+        const threads = await api.searchPosts(keyword);
         
         if (!threads || threads.length === 0) {
             res.status(200).json({

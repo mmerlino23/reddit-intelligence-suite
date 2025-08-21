@@ -1,4 +1,4 @@
-const EnhancedScanner = require('../modules/enhanced-scanner');
+const RedditAPI = require('../modules/reddit-api');
 const SentimentAnalyzer = require('../modules/sentiment');
 
 module.exports = async (req, res) => {
@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
             return;
         }
         
-        const scanner = new EnhancedScanner(process.env.RAPIDAPI_KEY);
+        const api = new RedditAPI(); // Using YOUR PAID Reddit34 API
         const sentiment = new SentimentAnalyzer();
         
         // Search for brand mentions
@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
         
         const allThreads = [];
         for (const term of searchTerms) {
-            const results = await scanner.searchPosts(term, 50);
+            const results = await api.searchPosts(term);
             allThreads.push(...results);
         }
         
