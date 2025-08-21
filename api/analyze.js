@@ -1,4 +1,4 @@
-const RedditAPI = require('../modules/reddit-api');
+const RedditFreeAPI = require('../modules/reddit-free-api');
 const SentimentAnalyzer = require('../modules/sentiment');
 const PainExtractor = require('../modules/pain-extractor');
 
@@ -26,8 +26,8 @@ module.exports = async (req, res) => {
             return;
         }
         
-        // Using YOUR PAID Reddit34 API
-        const api = new RedditAPI();
+        // Using FREE Reddit API - no authentication needed
+        const api = new RedditFreeAPI();
         const sentiment = new SentimentAnalyzer();
         const painExtractor = new PainExtractor();
         

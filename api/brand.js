@@ -1,4 +1,4 @@
-const RedditAPI = require('../modules/reddit-api');
+const RedditFreeAPI = require('../modules/reddit-free-api');
 const SentimentAnalyzer = require('../modules/sentiment');
 
 module.exports = async (req, res) => {
@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
             return;
         }
         
-        const api = new RedditAPI(); // Using YOUR PAID Reddit34 API
+        const api = new RedditFreeAPI(); // Using FREE Reddit API
         const sentiment = new SentimentAnalyzer();
         
         // Search for brand mentions
