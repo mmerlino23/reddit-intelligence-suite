@@ -3,7 +3,9 @@ const http = require('https');
 // YOUR PAID RAPIDAPI REDDIT34 SERVICE
 class RedditAPI {
     constructor() {
-        this.apiKey = process.env.RAPIDAPI_KEY || '18a8353a07msh22bbf53c2cc3e32p136ef3jsn1ad5ad5d0630';
+        // Clean the API key of any whitespace or invalid characters
+        const key = process.env.RAPIDAPI_KEY || '18a8353a07msh22bbf53c2cc3e32p136ef3jsn1ad5ad5d0630';
+        this.apiKey = key.trim().replace(/[\r\n\t]/g, '');
         this.host = 'reddit34.p.rapidapi.com';
     }
 
